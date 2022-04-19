@@ -1,0 +1,27 @@
+#BlueJ class context
+comment0.target=Player
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Player\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=x\ y
+comment1.target=Player(int,\ int)
+comment10.params=speed1
+comment10.target=void\ moveY(int)
+comment11.params=
+comment11.target=void\ tObsY()
+comment2.params=
+comment2.target=void\ addNewPl()
+comment3.params=
+comment3.target=void\ isStr()
+comment4.params=
+comment4.target=void\ act()
+comment5.params=
+comment5.target=boolean\ isTouchBlock()
+comment6.params=
+comment6.target=void\ animation()
+comment7.params=
+comment7.target=void\ fall()
+comment7.text=public\ void\ upSquare(){\r\n\ \ \ \ \ \ \ \ sq.setWH(ygx2-ygx1,\ ygy2-ygy1);\r\n\ \ \ \ \ \ \ \ //x+\=sq.getMX();\r\n\ \ \ \ \ \ \ \ //y+\=sq.getMY();\r\n}
+comment8.params=speed1
+comment8.target=void\ moveX(int)
+comment9.params=
+comment9.target=void\ tObsX()
+numComments=12

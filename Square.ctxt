@@ -1,0 +1,18 @@
+#BlueJ class context
+comment0.target=Square
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Square\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=x\ y
+comment1.target=Square(int,\ int)
+comment2.params=ob
+comment2.target=void\ updateImage(greenfoot.Actor)
+comment3.params=x1\ y1
+comment3.target=void\ setWH(int,\ int)
+comment4.params=
+comment4.target=boolean\ isTouchBlock()
+comment5.params=xspeed1
+comment5.target=int\ getMX(int)
+comment6.params=yspeed1
+comment6.target=int\ getMY(int)
+comment7.params=
+comment7.target=void\ act()
+numComments=8
