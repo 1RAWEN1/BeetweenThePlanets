@@ -1,0 +1,21 @@
+#BlueJ class context
+comment0.target=Node
+comment1.params=
+comment1.target=void\ doMainActions()
+comment2.params=
+comment2.target=void\ distributeEnergy()
+comment3.params=energy1
+comment3.target=void\ updateEnergyValue(int)
+comment4.params=
+comment4.target=void\ removeNullStr()
+comment5.params=
+comment5.target=void\ changeStructureList()
+comment6.params=getter
+comment6.target=void\ addGetter(Structures)
+comment7.params=consumer
+comment7.target=void\ addConsumer(Structures)
+comment8.params=getter
+comment8.target=void\ removeGetter(Structures)
+comment9.params=consumer
+comment9.target=void\ removeConsumer(Structures)
+numComments=10

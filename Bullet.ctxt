@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=Bullet
+comment1.params=speed\ damage\ teamNum
+comment1.target=Bullet(int,\ int,\ int)
+comment2.params=speed\ damage\ homing\ teamNum
+comment2.target=Bullet(int,\ int,\ boolean,\ int)
+comment3.params=speed\ damage\ splash\ radius\ homing\ teamNum\ x\ y
+comment3.target=Bullet(int,\ int,\ boolean,\ int,\ boolean,\ int,\ double,\ double)
+comment4.params=
+comment4.target=void\ act()
+comment5.params=
+comment5.target=void\ updateLocation()
+comment6.params=
+comment6.target=void\ move()
+comment7.params=
+comment7.target=void\ damage()
+numComments=8

@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=helpObject
+comment1.params=myStructure
+comment1.target=helpObject(Structures)
+comment2.params=
+comment2.target=void\ setNullImage()
+comment3.params=
+comment3.target=void\ act()
+comment4.params=st
+comment4.target=void\ add(Structures)
+comment5.params=st
+comment5.target=void\ remove(Structures)
+comment6.params=fon\ c\ xLoc\ yLoc
+comment6.target=void\ drawLines(greenfoot.GreenfootImage,\ greenfoot.Color,\ int,\ int)
+comment7.params=
+comment7.target=void\ drawConnections()
+comment8.params=color\ radius\ structures
+comment8.target=void\ drawCircle(greenfoot.Color,\ int,\ java.util.ArrayList)
+numComments=9

@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=Unit
+comment1.params=
+comment1.target=void\ doMainAction()
+comment2.params=
+comment2.target=void\ updateTarget()
+comment3.params=
+comment3.target=void\ turn()
+comment4.params=
+comment4.target=void\ shoot()
+comment5.params=
+comment5.target=void\ updateLocation()
+comment6.params=
+comment6.target=void\ move()
+comment7.params=damage
+comment7.target=void\ damage(int)
+numComments=8

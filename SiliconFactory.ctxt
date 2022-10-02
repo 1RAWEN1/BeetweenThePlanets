@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=SiliconFactory
+comment1.params=type1
+comment1.target=SiliconFactory(int)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=
+comment3.target=void\ updateThisImage()
+numComments=4
