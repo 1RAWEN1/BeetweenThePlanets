@@ -23,12 +23,16 @@ public class Cell extends Actor
     }
     public void act() 
     {
-        if(type > 0 && type <= 10 && Greenfoot.mousePressed(this)){
+        if(type > 0 && type <= 10 && MyWorld.mi.MousePressed(this)){
             i3=0;
             for(int i=0;i<5;i++){
                 for(int i1=0;i1<3;i1++){
+                    myStructureList.cells[i][i1].type = 0;
+                }
+            }
+            for(int i=0;i<5;i++){
+                for(int i1=0;i1<3;i1++){
                     try{
-                        myStructureList.cells[i][i1].type = 0;
                         myStructureList.cells[i][i1].type = myStructureList.foundStr[type - 1].get(i3);
                         i3++;
                     }catch(Exception e){
@@ -37,7 +41,7 @@ public class Cell extends Actor
                 }
             }
         }
-        if(Greenfoot.mousePressed(this) && type > 10){
+        else if(MyWorld.mi.MousePressed(this) && type > 10){
             MyWorld.b.changeType(type);
             MyWorld.b.start = 1;
         }
@@ -60,22 +64,66 @@ public class Cell extends Actor
         else if(type==3){
             myImage=new GreenfootImage("transport.png");
         }
+        else if(type==4){
+            myImage=new GreenfootImage("plant.png");
+        }
+        else if(type==5){
+            myImage=new GreenfootImage("energy.png");
+        }
+        else if(type==6){
+            myImage=new GreenfootImage("water.png");
+        }
         else if(type==11){
-            GreenfootImage fon=new GreenfootImage("dob1.png");
-            GreenfootImage getter=new GreenfootImage("dob11.png");
-            myImage.drawImage(fon, myImage.getWidth()/2-fon.getWidth()/2, myImage.getHeight()/2-fon.getHeight()/2);
-            myImage.drawImage(getter, myImage.getWidth()/2-getter.getWidth()/2, myImage.getHeight()/2-getter.getHeight()/2);
+            setBuildingImage("dob1.png", "dob11.png");
         }
         else if(type==41){
-            GreenfootImage fon=new GreenfootImage("transporter.png");
-            fon.scale(20, 20);
-            myImage.drawImage(fon, myImage.getWidth()/2-fon.getWidth()/2, myImage.getHeight()/2-fon.getHeight()/2);
+            setBuildingImage("transporter.png");
         }
         else if(type==42){
-            GreenfootImage fon=new GreenfootImage("crossroad.png");
-            fon.scale(20, 20);
-            myImage.drawImage(fon, myImage.getWidth()/2-fon.getWidth()/2, myImage.getHeight()/2-fon.getHeight()/2);
+            setBuildingImage("crossroad.png");
+        }
+        else if(type==43){
+            setBuildingImage("transmitter.png");
+        }
+        else if(type==56) {
+            setBuildingImage("Press.png");
+        }
+        else if(type==57) {
+            setBuildingImage("Fab.png");
+        }
+        else if(type==58) {
+            setBuildingImage("dob1.png");
+        }
+        else if(type==71) {
+            setBuildingImage("En.png");
+        }
+        else if(type==73) {
+            setBuildingImage("Gen3.png");
+        }
+        else if(type==86) {
+            setBuildingImage("Gen2.png");
+        }
+        else if(type==87) {
+            setBuildingImage("waterTransporter.png");
+        }
+        else if(type==88) {
+            setBuildingImage("waterCrossroad.png");
+        }
+        else if(type==89) {
+            setBuildingImage("waterRouter.png");
         }
         setImage(myImage);
+    }
+
+    public void setBuildingImage(String imageName){
+        GreenfootImage fon = new GreenfootImage(imageName);
+        fon.scale(20, 20);
+        myImage.drawImage(fon, myImage.getWidth()/2-fon.getWidth()/2, myImage.getHeight()/2-fon.getHeight()/2);
+    }
+    public void setBuildingImage(String imageName, String imageName2){
+        GreenfootImage fon=new GreenfootImage(imageName);
+        GreenfootImage getter=new GreenfootImage(imageName2);
+        myImage.drawImage(fon, myImage.getWidth()/2-fon.getWidth()/2, myImage.getHeight()/2-fon.getHeight()/2);
+        myImage.drawImage(getter, myImage.getWidth()/2-getter.getWidth()/2, myImage.getHeight()/2-getter.getHeight()/2);
     }
 }

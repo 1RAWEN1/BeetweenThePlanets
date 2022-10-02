@@ -13,25 +13,23 @@ public class Crossroad extends Structures{
 
             if(Mouse.mousePressed && !isTouching(NatObstical.class) && !isTouching(Structures.class)){
                 if(canBeBuild()){
-                    x=MyWorld.mi.x;
-                    y=MyWorld.mi.y;
                     type=1;
                 }
             }
         }
-        else if(type==1){
+        else if(type==1 && isBuilt()){
             isClick();
-
-            structures.clear();
 
             checkStructures(giveResFromRot);
 
-            if(timer.millisElapsed() > millisStep){
-                for(int i2 = 0; i2 < MyWorld.resTypes; i2++){
-                    transportRes(i2);
+            removeNullStructures();
 
-                    timer.mark();
+            if(timer.millisElapsed() > millisStep){
+                for(Integer i2 : needRes){
+                    transportRes(i2);
                 }
+
+                timer.mark();
             }
         }
     }

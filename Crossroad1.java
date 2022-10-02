@@ -6,18 +6,20 @@ public class Crossroad1 extends Crossroad{
         radius = 0;
         millisStep = 500;
         for(int i = 0; i < MyWorld.resTypes; i++){
-            needRes.add(i);
+            needRes.add(i + 1);
         }
         fon = new GreenfootImage("crossroad.png");
         cost.add(2);
         cost.add(2);
+
+        updateStructureLocation();
     }
 
     public void act()
     {
-        doMainActions();
         updateThisImage();
-        updateMyImage();// Add your action code here.
+        doMainActions();
+        //updateMyImage();// Add your action code here.
     }
 
     public void updateThisImage(){

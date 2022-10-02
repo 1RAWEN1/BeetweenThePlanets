@@ -45,6 +45,8 @@ public class Player extends Actor
     Square sq;
     Block b;
     Structures st;
+
+    static boolean isBusy = false;
     public Player(int x, int y){
         setRotation(270);
         r1=getRotation();
@@ -52,8 +54,18 @@ public class Player extends Actor
         myStructures.add(11);
         myStructures.add(41);
         myStructures.add(42);
-        this.x=x;
-        this.y=y;
+        myStructures.add(43);
+        myStructures.add(56);
+        myStructures.add(57);
+        myStructures.add(58);
+        myStructures.add(71);
+        myStructures.add(73);
+        myStructures.add(86);
+        myStructures.add(87);
+        myStructures.add(88);
+        myStructures.add(89);
+        Player.x = x;
+        Player.y = y;
         /*GreenfootImage image=new GreenfootImage(20,20);
         image.setColor(new Color(255, 100, 0, 255));
         image.fillOval(0,0,20,20);
@@ -77,15 +89,13 @@ public class Player extends Actor
             st=getObjectsInRange(1000, Structures.class).get(i);
             if(st.building<st.building1 && st.type==1){
                 st.building++;
-                if(st.building==st.building1){
-                    addNewPl();
-                }
                 break;
             }
         }
     }
     public void act() 
     {
+        isBusy = false;
         /*if(start==0){
             getWorld().addObject(sq, getX(), getY());
             start=1;
@@ -227,15 +237,12 @@ public class Player extends Actor
             y=MyWorld.y1*10;
         }
         setLocation(500,300);
-        setLoc=false;
-        if(sy!=y || sx!=x){
-            setLoc=true;
-        }
+        setLoc = sy != y || sx != x;
         if(start==0){
             setLoc=true;
             start=1;
         }
-        isStr();
+        //isStr();
         /*if(isTouching(Block.class)){
             if(isTouchBlock()){
                 while(isTouchBlock()){

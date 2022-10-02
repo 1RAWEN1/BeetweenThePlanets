@@ -25,36 +25,22 @@ public class MyWorld extends World
     public static GreenfootImage myImage;
     GreenfootImage myImage1;
     public static GreenfootImage worldImage=new GreenfootImage(1000, 600);
-    public static GreenfootImage connectionImage=new GreenfootImage(1000, 600);
+    public static GreenfootImage connectionImage;
     GreenfootImage fon=new GreenfootImage("fon.png");
     GreenfootImage fon1=new GreenfootImage("earth.png");
     GreenfootImage fon2=new GreenfootImage("earth2.png");
     GreenfootImage map;
-    GreenfootImage coal=new GreenfootImage("coal.png");
-    GreenfootImage iron=new GreenfootImage("iron.png");
-    GreenfootImage lead=new GreenfootImage("lead.png");
-    GreenfootImage mountain=new GreenfootImage("mountain.png");
-    GreenfootImage sand=new GreenfootImage("sand.png");
-    int spawnCoal;
-    int spawnIron;
-    int spawnLead;
-    int spawnMountain;
-    int x;
-    int y;
+    static Map minimap;
     int x2;
     int y2;
     int addBaze;
-    int i1;
-    int i2;
     int waterX;
     int waterY;
     int radius;
     double radius1;
-    public static boolean haveSelectedObject;
-    static Structures st;
     public static int x1;
     public static int y1;
-    public static int resTypes =4;
+    public static int resTypes = 8;
     public static int [][] myWorld;
     int g1;
     int dosh;
@@ -72,12 +58,19 @@ public class MyWorld extends World
     public static Baza myBaza;
 
     public static int transmitterRot;
+
+
+    static boolean addStructure;
+    static boolean deleteStructure;
+
+    static Structures selectedStructure;
     public MyWorld()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(1000, 600, 1);
+        super(1000, 600, 1, false);
         x1=200;
         y1=120;
+        connectionImage = new GreenfootImage(x1 * 10, y1 * 10);
         Map.cof=200/x1;
         Map.cof=120/y1;
         myWorld=new int[x1][y1];
@@ -87,17 +80,17 @@ public class MyWorld extends World
         //glowing=new int[x1][y1];
         waterX =Greenfoot.getRandomNumber(x1) * 10;
         waterY =Greenfoot.getRandomNumber(y1) * 10;
-        radius=Greenfoot.getRandomNumber(30)+41;
-        haveSelectedObject = false;
+        radius=Greenfoot.getRandomNumber(100)+41;
+        //haveSelectedObject = false;
 
-        setPaintOrder(Cell.class, StructuresList.class, Map.class, Builder.class, Structures.class, helpObject.class);
+        setPaintOrder(ConnectionImage.class, Player.class, Mouse.class, Cell.class, StructuresList.class, Map.class, Builder.class, Label.class, Structures.class);
         summonWorld();
     } 
     public void summonWorld(){
         for(int i=0;i<x1;i++){
             for(int i1=0;i1<y1;i1++){
                 myWorld[i][i1]=1;
-                spawnCoal =Greenfoot.getRandomNumber(451);
+                /*spawnCoal =Greenfoot.getRandomNumber(451);
                 if(i-1>=0 && i1-1>=0 && myWorld[i-1][i1-1]==2){
                     spawnCoal +=50;
                 }
@@ -112,8 +105,9 @@ public class MyWorld extends World
                 }
                 if(spawnCoal >=450){
                     myWorld[i][i1]=2;
-                }
-                spawnIron =Greenfoot.getRandomNumber(501);
+                }*/
+                generateWorldObject(700, 250, 2, i, i1);
+                /*spawnIron =Greenfoot.getRandomNumber(501);
                 if(i-1>=0 && i1-1>=0 && myWorld[i-1][i1-1]==3){
                     spawnIron +=100;
                 }
@@ -128,8 +122,9 @@ public class MyWorld extends World
                 }
                 if(spawnIron >=500){
                     myWorld[i][i1]=3;
-                }
-                spawnLead =Greenfoot.getRandomNumber(501);
+                }*/
+                generateWorldObject(700, 250, 3, i, i1);
+                /*spawnLead =Greenfoot.getRandomNumber(501);
                 if(i-1>=0 && i1-1>=0 && myWorld[i-1][i1-1]==5){
                     spawnLead +=100;
                 }
@@ -144,8 +139,9 @@ public class MyWorld extends World
                 }
                 if(spawnLead >=500){
                     myWorld[i][i1]=5;
-                }
-                spawnMountain =Greenfoot.getRandomNumber(301);
+                }*/
+                generateWorldObject(700, 250, 5, i, i1);
+                /*spawnMountain =Greenfoot.getRandomNumber(301);
                 if(i-1>=0 && i1-1>=0 && myWorld[i-1][i1-1]==4){
                     spawnMountain +=70;
                 }
@@ -163,10 +159,12 @@ public class MyWorld extends World
                 }
                 if(i1+1<y1 && i+1<x1 && myWorld[i+1][i1+1]==4){
                     spawnmountain+=70; 
-                }*/
+                }
                 if(spawnMountain >=300){
                     myWorld[i][i1]=4;
-                }
+                }*/
+                generateWorldObject(700, 200, 9, i, i1);
+                generateWorldObject(700, 270, 4, i, i1);
                 radius1=Math.sqrt(Math.pow(Math.abs(waterX -((i*10)+5)),2)+Math.pow(Math.abs(waterY -((i1*10)+5)),2));
                 if(myWorld[i][i1]!=4 && radius1<=radius+30){
                     myWorld[i][i1]=8;
@@ -177,16 +175,16 @@ public class MyWorld extends World
                 if(radius1<=radius/2){
                     myWorld[i][i1]=7;
                 }
-                if(i==0 || i1==0 || i==x1-1 || i1==y1-1){
+                /*if(i==0 || i1==0 || i==x1-1 || i1==y1-1){
                     myWorld[i][i1]=4;
-                }
+                }*/
                 /*if(i>=80 && i1>=40){
                     myWorld[i][i1]=4;
                 }*/
             }
         }
-        for(int i=0;i<x1;i++){
-            for(int i1=0;i1<y1;i1++){
+        for(int i=1;i<x1 - 1;i++){
+            for(int i1=1;i1<y1 - 1;i1++){
                 if(myWorld[i][i1]!=4){
                     if(myWorld[i-1][i1]==4
                     && myWorld[i+1][i1]==4
@@ -200,17 +198,18 @@ public class MyWorld extends World
         while(addBaze ==0){
             x2=Greenfoot.getRandomNumber(x1-4);
             y2=Greenfoot.getRandomNumber(y1-4);
-            addBaze =1;
+            addBaze = 1;
             for(int i=0;i<4;i++){
                 for(int i1=0;i1<4;i1++){
-                    if(myWorld[x2+i][y2+i1]==7 || myWorld[x2+i][y2+i1]==4){
+                    if(/*myWorld[x2+i][y2+i1]==7 || myWorld[x2+i][y2+i1]==4*/myWorld[x2+i][y2+i1]!=1){
                         addBaze =0;
+                        break;
                     }
                 }
             }
         }
-        x2=x2*10;
-        y2=y2*10;
+        x2= (x2*10) + 20;
+        y2= (y2*10) + 20;
         /*for(int i=0;i<50;i++){
             for(int i1=0;i1<30;i1++){
                 myWorld[i][i1]=1;
@@ -274,22 +273,53 @@ public class MyWorld extends World
         i=new Inventory();
         addObject(i,900,350);
         addObject(b, getWidth()/2,getHeight()/2);
+        /*for(int i = 0; i < 200; i++){
+            addObject(new Transmitter1(1), Greenfoot.getRandomNumber(getWidth()), Greenfoot.getRandomNumber(getHeight()));
+        }*/
         myBaza=new Baza(x2,y2);
         addObject(myBaza, 800+((x2*Map.cof)/10)+(2*Map.cof), ((y2*Map.cof)/10)+(2*Map.cof));
         addObject(new Player(x2+20,y2+20), x2+20, y2+20);
         addObject(new StructuresList(), getWidth()-100, getHeight()-100);
         mi=new Mouse();
         addObject(mi,0,0);
+        ci = new ConnectionImage();
+        addObject(ci, getWidth() / 2, getHeight() / 2);
     }
+
+    ConnectionImage ci;
+    GreenfootImage connectionImage1=new GreenfootImage(1000, 600);
     public void setNewImage(){
         worldImage.setColor(Color.BLACK);
         worldImage.fill();
         worldImage.drawImage(myImage, (getWidth()/2)-Player.x, (getHeight()/2)-Player.y);
-        worldImage.drawImage(connectionImage, (getWidth()/2)-Player.x, (getHeight()/2)-Player.y);
         setBackground(worldImage);
-        myImage=new GreenfootImage(myImage1);
-        connectionImage = new GreenfootImage(x1*10, y1*10);
+        connectionImage1.clear();
+        connectionImage1.drawImage(connectionImage, (getWidth()/2)-Player.x, (getHeight()/2)-Player.y);
+        ci.setImage(connectionImage1);
+        myImage = new GreenfootImage(myImage1);
+        connectionImage.clear();
     }
+
+    public void generateWorldObject(int probability, int probability1, int type, int x, int y){
+        if(Greenfoot.getRandomNumber(probability + 1) >= probability && x > 0 && y > 0 && x < x1 && y < y1){
+            myWorld[x][y] = type;
+            for(int i = 0; i < 4; i++){
+                int rotation = 90 * i;
+                generateWorldObject1(probability, probability1, type, x + (int)Math.cos(Math.toRadians(rotation)), y + (int)Math.sin(Math.toRadians(rotation)));
+            }
+        }
+    }
+
+    public void generateWorldObject1(int probability, int probability1, int type, int x, int y){
+        if(Greenfoot.getRandomNumber(probability + 1) + probability1 >= probability && x > 0 && y > 0 && x < x1 && y < y1 && myWorld[x][y] == 1){
+            myWorld[x][y] = type;
+            for(int i = 0; i < 4; i++){
+                int rotation = 90 * i;
+                generateWorldObject1(probability, probability1, type, x + (int)Math.cos(Math.toRadians(rotation)), y + (int)Math.sin(Math.toRadians(rotation)));
+            }
+        }
+    }
+
     public void setGlowing(){
         /*for(int i=0;i<x1;i++){
             b1=0;
@@ -517,7 +547,7 @@ public class MyWorld extends World
                     rot=0;
                     if(i+1<x1){
                         if(i1-1>=0){
-                            if(myWorld[i+1][i1-1]==2 || myWorld[i+1][i1-1]==3 || myWorld[i+1][i1-1]==5){
+                            if(myWorld[i+1][i1-1]==2 || myWorld[i+1][i1-1]==3 || myWorld[i+1][i1-1]==5 || myWorld[i+1][i1-1]==9){
                                 fon2=new GreenfootImage("earth5.png");
                                 fon2.rotate(180);
                                 //myImage.drawImage(fon2,(i*10)+5,(i1*10));
@@ -525,7 +555,7 @@ public class MyWorld extends World
                             }
                         }
                         if(i1+1<y1){
-                            if(myWorld[i+1][i1+1]==2 || myWorld[i+1][i1+1]==3 || myWorld[i+1][i1+1]==5){
+                            if(myWorld[i+1][i1+1]==2 || myWorld[i+1][i1+1]==3 || myWorld[i+1][i1+1]==5 || myWorld[i+1][i1+1]==9){
                                 fon2=new GreenfootImage("earth5.png");
                                 fon2.rotate(-90);
                                 //myImage.drawImage(fon2,(i*10)+5,(i1*10)+5);
@@ -535,7 +565,7 @@ public class MyWorld extends World
                     }
                     if(i-1>=0){
                         if(i1-1>=0){
-                            if(myWorld[i-1][i1-1]==2 || myWorld[i-1][i1-1]==3 || myWorld[i-1][i1-1]==5){
+                            if(myWorld[i-1][i1-1]==2 || myWorld[i-1][i1-1]==3 || myWorld[i-1][i1-1]==5 || myWorld[i-1][i1-1]==9){
                                 fon2=new GreenfootImage("earth5.png");
                                 fon2.rotate(90);
                                 //myImage.drawImage(fon2,(i*10),(i1*10));
@@ -543,13 +573,13 @@ public class MyWorld extends World
                             }
                         }
                         if(i1+1<y1){
-                            if(myWorld[i-1][i1+1]==2 || myWorld[i-1][i1+1]==3 || myWorld[i-1][i1+1]==5){
+                            if(myWorld[i-1][i1+1]==2 || myWorld[i-1][i1+1]==3 || myWorld[i-1][i1+1]==5 || myWorld[i-1][i1+1]==9){
                                 fon2=new GreenfootImage("earth5.png");
                                 //myImage.drawImage(fon2,(i*10),(i1*10)+5);
                                 myImage.drawImage(fon2,(i*10),(i1*10));
                             }
                         }
-                        if(myWorld[i-1][i1]==2 || myWorld[i-1][i1]==3 || myWorld[i-1][i1]==5){
+                        if(myWorld[i-1][i1]==2 || myWorld[i-1][i1]==3 || myWorld[i-1][i1]==5 || myWorld[i-1][i1]==9){
                             i3++;
                             i4=1;
                             rot=180;
@@ -559,7 +589,7 @@ public class MyWorld extends World
                         }
                     }
                     if(i1-1>=0){
-                        if(myWorld[i][i1-1]==2 || myWorld[i][i1-1]==3 || myWorld[i][i1-1]==5){
+                        if(myWorld[i][i1-1]==2 || myWorld[i][i1-1]==3 || myWorld[i][i1-1]==5 || myWorld[i][i1-1]==9){
                             i3++;
                             i5=1;
                             rot+=270;
@@ -569,7 +599,7 @@ public class MyWorld extends World
                         }
                     }
                     if(i1+1<y1){
-                        if(myWorld[i][i1+1]==2 || myWorld[i][i1+1]==3 || myWorld[i][i1+1]==5){
+                        if(myWorld[i][i1+1]==2 || myWorld[i][i1+1]==3 || myWorld[i][i1+1]==5 || myWorld[i][i1+1]==9){
                             i3++;
                             if(i5==1){
                                 i5=2;
@@ -581,14 +611,14 @@ public class MyWorld extends World
                         }
                     }
                     if(i+1<x1){
-                        if(myWorld[i+1][i1]==2 || myWorld[i+1][i1]==3 || myWorld[i+1][i1]==5){
+                        if(myWorld[i+1][i1]==2 || myWorld[i+1][i1]==3 || myWorld[i+1][i1]==5 || myWorld[i+1][i1]==9){
                             i3++;
                             if(i4==1){
                                 i4=2;
                             }
                             rot=rot*2;
-                            if(i1+1>=0){
-                                if(myWorld[i][i1+1]==2 || myWorld[i][i1+1]==3 || myWorld[i][i1+1]==5){
+                            if(i1+1 < y1){
+                                if(myWorld[i][i1+1]==2 || myWorld[i][i1+1]==3 || myWorld[i][i1+1]==5 || myWorld[i][i1+1]==9){
                                     rot-=90;
                                 }
                             }
@@ -606,14 +636,14 @@ public class MyWorld extends World
                         myImage.drawImage(fon2,(i*10),(i1*10));
                         if(i-1>=0){
                             if(i1-1>=0 && rot==0){
-                                if(myWorld[i-1][i1-1]==2 || myWorld[i-1][i1-1]==3 || myWorld[i-1][i1-1]==5){
+                                if(myWorld[i-1][i1-1]==2 || myWorld[i-1][i1-1]==3 || myWorld[i-1][i1-1]==5 || myWorld[i-1][i1-1]==9){
                                     fon2=new GreenfootImage("earth5.png");
                                     fon2.rotate(90);
                                     myImage.drawImage(fon2,(i*10),(i1*10));
                                 }
                             }
                             if(i1+1<y1 && rot==270){
-                                if(myWorld[i-1][i1+1]==2 || myWorld[i-1][i1+1]==3 || myWorld[i-1][i1+1]==5){
+                                if(myWorld[i-1][i1+1]==2 || myWorld[i-1][i1+1]==3 || myWorld[i-1][i1+1]==5 || myWorld[i-1][i1+1]==9){
                                     fon2=new GreenfootImage("earth5.png");
                                     //myImage.drawImage(fon2,(i*10),(i1*10)+5);
                                     myImage.drawImage(fon2,(i*10),(i1*10));
@@ -622,7 +652,7 @@ public class MyWorld extends World
                         }
                         if(i+1<x1){
                             if(i1-1>=0 && rot==90){
-                                if(myWorld[i+1][i1-1]==2 || myWorld[i+1][i1-1]==3 || myWorld[i+1][i1-1]==5){
+                                if(myWorld[i+1][i1-1]==2 || myWorld[i+1][i1-1]==3 || myWorld[i+1][i1-1]==5 || myWorld[i+1][i1-1]==9){
                                     fon2=new GreenfootImage("earth5.png");
                                     fon2.rotate(180);
                                     //myImage.drawImage(fon2,(i*10)+5,(i1*10));
@@ -630,7 +660,7 @@ public class MyWorld extends World
                                 }
                             }
                             if(i1+1<y1 && rot==180){
-                                if(myWorld[i+1][i1+1]==2 || myWorld[i+1][i1+1]==3 || myWorld[i+1][i1+1]==5){
+                                if(myWorld[i+1][i1+1]==2 || myWorld[i+1][i1+1]==3 || myWorld[i+1][i1+1]==5 || myWorld[i+1][i1-1]==9){
                                     fon2=new GreenfootImage("earth5.png");
                                     fon2.rotate(-90);
                                     //myImage.drawImage(fon2,(i*10)+5,(i1*10)+5);
@@ -643,37 +673,43 @@ public class MyWorld extends World
                         myImage.drawImage(fon1,(i*10),(i1*10));
                     }
                 }
-                else if(myWorld[i][i1]==2){
+                else if(myWorld[i][i1]==2 ||
+                        myWorld[i][i1]==3 ||
+                        myWorld[i][i1]==5 ||
+                        myWorld[i][i1]==9){
                     myImage.drawImage(fon1,(i*10),(i1*10));
-                    myImage.drawImage(coal,(i*10),(i1*10));
-                    map.setColorAt(i,i1,new Color(0,0,0,255));
-                }
-                else if(myWorld[i][i1]==3){
-                    myImage.drawImage(fon1,(i*10),(i1*10));
-                    myImage.drawImage(iron,(i*10),(i1*10));
-                    map.setColorAt(i,i1,new Color(200,100,100,255));
+                    if(myWorld[i][i1]==2) {
+                        map.setColorAt(i, i1, new Color(0, 0, 0, 255));
+                    }
+                    else if(myWorld[i][i1]==3){
+                        map.setColorAt(i,i1,new Color(200,100,100,255));
+                    }
+                    else if(myWorld[i][i1]==5){
+                        map.setColorAt(i,i1,new Color(0,100,200,255));
+                    }
+                    else if(myWorld[i][i1]==9){
+                        map.setColorAt(i,i1,new Color(255,255,255,255));
+                    }
+                    addObject(new Resource(myWorld[i][i1], (i*10) + 5,(i1*10) + 5), 0, 0);
                 }
                 else if(myWorld[i][i1]==4){
                     //addObject(new Mountain((i*10)+5, (i1*10)+5),(i*10)+5,(i1*10)+5);
-                    myImage.drawImage(mountain,(i*10),(i1*10));
+                    //myImage.drawImage(mountain,(i*10),(i1*10));
                     map.setColorAt(i,i1,new Color(0,200,0,255));
                     addObject(new Mountain((i*10)+5,(i1*10)+5),(Map.cof/2)+800+i*Map.cof,(Map.cof/2)+i1*Map.cof);
                 }
-                else if(myWorld[i][i1]==5){
-                    myImage.drawImage(fon1,(i*10),(i1*10));
-                    myImage.drawImage(lead,(i*10),(i1*10));
-                    map.setColorAt(i,i1,new Color(0,100,200,255));
-                }
                 else if(myWorld[i][i1]==6){
                     myImage.drawImage(fon,(i*10),(i1*10));
-                    addObject(new Water((i*10)+5,(i1*10)+5),(Map.cof/2)+800+i*Map.cof,(Map.cof/2)+i1*Map.cof); 
+                    map.setColorAt(i,i1,new Color(0, 0, 255, 80));
+                    addObject(new Resource(myWorld[i][i1], (i*10) + 5,(i1*10) + 5),0,0);
                 }
                 else if(myWorld[i][i1]==7){
                     myImage.drawImage(fon,(i*10),(i1*10));
+                    map.setColorAt(i,i1,new Color(0, 0, 255, 150));
                     addObject(new Water2((i*10)+5,(i1*10)+5),(Map.cof/2)+800+i*Map.cof,(Map.cof/2)+i1*Map.cof); 
                 }
                 else if(myWorld[i][i1]==8){
-                    myImage.drawImage(sand,(i*10),(i1*10));
+                    addObject(new Resource(myWorld[i][i1], (i*10) + 5,(i1*10) + 5), 0, 0);
                     map.setColorAt(i,i1,new Color(0,255,0,255));
                     i3=0;
                     i4=0;
@@ -781,11 +817,32 @@ public class MyWorld extends World
         }
         blockx=fon.getWidth();
         myImage1=new GreenfootImage(myImage);
-        Map map1=new Map(x1,y1,map);
-        addObject(map1,0,0);
+        minimap=new Map(x1,y1,map);
+        addObject(minimap,0,0);
         setBackground(myImage);
     }
+
+    boolean add;
+    boolean delete;
     public void act(){
+        if(addStructure){
+            if(add){
+                addStructure = false;
+                add = false;
+            }
+            else {
+                add = true;
+            }
+        }
+        if(deleteStructure){
+            if(delete){
+                deleteStructure = false;
+                delete = false;
+            }
+            else {
+                delete = true;
+            }
+        }
         setNewImage();
         /*if(Greenfoot.mousePressed(null) && haveC==0){
             st=mi.getObj();

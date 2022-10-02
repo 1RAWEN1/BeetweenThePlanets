@@ -47,19 +47,32 @@ public class Transmitter extends Structures
                 MyWorld.transmitterRot = rot;
             }
 
+            if(MyWorld.mi.rot != -1){
+                rot = MyWorld.mi.rot;
+                MyWorld.transmitterRot = rot;
+            }
+
             arrow = new GreenfootImage("arrow.png");
             arrow.rotate(rot);
-            MyWorld.myImage.drawImage(arrow, x  + ((int)Math.cos(Math.toRadians(rot)) * 10), y + ((int)Math.sin(Math.toRadians(rot)) * 10));
+            MyWorld.connectionImage.drawImage(arrow, x - (getImage().getWidth() / 2) + ((int)Math.cos(Math.toRadians(rot)) * 10), y - (getImage().getHeight() / 2) + ((int)Math.sin(Math.toRadians(rot)) * 10));
 
             if(Mouse.mousePressed && !isTouching(NatObstical.class) && !isTouching(Structures.class)){
                 if(canBeBuild()){
-                    x=MyWorld.mi.x;
-                    y=MyWorld.mi.y;
                     type=1;
                 }
             }
+            else if(Mouse.mousePressed && isTouching(Transmitter.class)){
+                Transmitter tr = (Transmitter)getOneIntersectingObject(Transmitter.class);
+                if(tr.rot != rot){
+                    tr.deleteStructure();if(!isTouching(NatObstical.class)){
+                        if(canBeBuild()){
+                            type=1;
+                        }
+                    }
+                }
+            }
         }
-        else if(type==1){
+        else if(type==1 && isBuilt()){
             isClick();
 
             checkStructures(rot);
@@ -67,16 +80,19 @@ public class Transmitter extends Structures
             removeNullStructures();
 
             if(timer.millisElapsed() > millisStep){
-                for(int i2 = 0; i2 < MyWorld.resTypes; i2++){
+                for(Integer i2 : needRes){
+                    int resValue1 = resNum[i2];
+
                     transportRes(i2);
 
-                    timer.mark();
+                    int resValue2 = resNum[i2];
+                    if(resValue2 < resValue1){
+                        break;
+                    }
                 }
+
+                timer.mark();
             }
         }
     }
-    public void act() 
-    {
-        // Add your action code here.
-    }    
 }

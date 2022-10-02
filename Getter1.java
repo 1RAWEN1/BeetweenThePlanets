@@ -13,9 +13,10 @@ public class Getter1 extends Getter
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public Getter1(int type1){
+        maxValueOfLiquid = 10;
         type = type1;
         maxResourсes = 10;
-        speed1 = 0.15;
+        speed1 = 0.1;
         radius = 0;
         millisStep = 500;
         fon = new GreenfootImage("dob1.png");
@@ -23,15 +24,25 @@ public class Getter1 extends Getter
         myImage1 = new GreenfootImage("dob1.png");
         cost.add(2);
         cost.add(20);
+
+        needRes.add(0);
+
+        canBreakRes.add(1);
+        canBreakRes.add(2);
+        canBreakRes.add(3);
+        canBreakRes.add(4);
+        canBreakRes.add(6);
+
+        updateStructureLocation();
     }
     public void act() 
     {
-        doMainActions();
         updateThisImage();
-        updateMyImage();// Add your action code here.
+        doMainActions();
+        //updateMyImage();// Add your action code here.
     }  
     public void updateThisImage(){
-        if(resNum[typeRes]< maxResourсes){
+        if(typeRes == -1 || resNum[typeRes]< maxResourсes){
             rot+=2;
         }
         if(rot==360){

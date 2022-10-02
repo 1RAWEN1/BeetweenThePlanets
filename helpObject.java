@@ -23,20 +23,6 @@ public class helpObject extends Actor{
         setImage(image);
     }
     public void act(){
-        x = myStructure.x;
-        y = myStructure.y;
-
-        if(!myStructure.selectStructure) {
-            drawConnections();
-        }
-
-        if(myStructure.selectStructure){
-            drawCircle(new Color(149, 33, 246), myStructure.radius, structures);
-        }
-
-        if(myStructure.getWorld() == null){
-            getWorld().removeObject(this);
-        }
     }
 
     public void add(Structures st){

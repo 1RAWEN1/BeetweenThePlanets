@@ -15,10 +15,12 @@ public class Label extends Actor
 {
     int type;
     int typeres;
+    GreenfootImage water=new GreenfootImage("water1.png");
     GreenfootImage coal=new GreenfootImage("coal.png");
     GreenfootImage iron=new GreenfootImage("iron.png");
     GreenfootImage lead=new GreenfootImage("lead.png");
     GreenfootImage sand=new GreenfootImage("sand.png");
+    GreenfootImage silica=new GreenfootImage("silica.png");
     
     private String value;
     private int fontSize;
@@ -96,14 +98,18 @@ public class Label extends Actor
      */
     private void updateImage()
     {
-        GreenfootImage myImage=new GreenfootImage(value, fontSize, fillColor, transparent, lineColor);
-        GreenfootImage myImage1=new GreenfootImage(value, fontSize, fillColor, transparent, lineColor);
-        myImage.clear();
-        if(myImage.getWidth()<myImage.getHeight()){
-            myImage=new GreenfootImage(myImage.getHeight(), myImage.getHeight());
-        }
         if(type==1){
-            if(typeres==1){
+            GreenfootImage myImage=new GreenfootImage(value, fontSize, fillColor, transparent, lineColor);
+            GreenfootImage myImage1=new GreenfootImage(value, fontSize, fillColor, transparent, lineColor);
+            myImage.clear();
+            if(myImage.getWidth()<myImage.getHeight()){
+                myImage=new GreenfootImage(myImage.getHeight(), myImage.getHeight());
+            }
+            if(typeres==0){
+                water.scale(myImage.getHeight(), myImage.getHeight());
+                myImage.drawImage(water, myImage.getWidth()/2-water.getWidth()/2, 0);
+            }
+            else if(typeres==1){
                 coal.scale(myImage.getHeight(), myImage.getHeight());
                 myImage.drawImage(coal, myImage.getWidth()/2-coal.getWidth()/2, 0);
             }
@@ -117,10 +123,17 @@ public class Label extends Actor
             }
             else if(typeres==4){
                 sand.scale(myImage.getHeight(), myImage.getHeight());
-                myImage.drawImage(sand, myImage.getWidth()/2-lead.getWidth()/2, 0);
+                myImage.drawImage(sand, myImage.getWidth()/2-sand.getWidth()/2, 0);
             }
+            else if(typeres==6){
+                silica.scale(myImage.getHeight(), myImage.getHeight());
+                myImage.drawImage(silica, myImage.getWidth()/2-silica.getWidth()/2, 0);
+            }
+            myImage.drawImage(myImage1,  myImage.getWidth()/2-myImage1.getWidth()/2, 0);
+            setImage(myImage);
         }
-        myImage.drawImage(myImage1,  myImage.getWidth()/2-myImage1.getWidth()/2, 0);
-        setImage(myImage);
+        else{
+            setImage(new GreenfootImage(value, fontSize, fillColor, transparent, lineColor));
+        }
     }
 }

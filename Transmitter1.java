@@ -16,24 +16,26 @@ public class Transmitter1 extends Transmitter
         type = type1;
         mainMax = 3;
         radius = 0;
-        millisStep = 1000;
+        millisStep = 700;
         for(int i = 0; i < MyWorld.resTypes; i++){
-            needRes.add(i);
+            needRes.add(i + 1);
         }
         fon = new GreenfootImage("transporter.png");
         cost.add(2);
         cost.add(1);
+
+        updateStructureLocation();
     }
 
-    public void act() 
+    public void act()
     {
-        doMainActions();
         updateThisImage();
-        updateMyImage();// Add your action code here.
+        doMainActions();
+        //updateMyImage();// Add your action code here.
     }
 
     public void updateThisImage(){
-        if(type == 0) {
+        if(type == 0 || type == 1 && !isBuilt()) {
             fon = new GreenfootImage("transporter.png");
             fon.rotate(rot);
         }

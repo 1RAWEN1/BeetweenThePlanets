@@ -12,19 +12,19 @@ public class Mountain extends NatObstical
      * Act - do whatever the Mountain wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
-    GreenfootImage fon;
     int x;
     int y;
     public Mountain(int x, int y){
         this.x=x;
         this.y=y;
-        GreenfootImage image=new GreenfootImage(Map.cof,Map.cof);
-        image.setColor(new Color(0, 200, 0, 150));
-        image.fill();
-        setImage(image);
+        setImage("mountain.png");
+    }
+
+    public void updateLocation(){
+        setLocation((getWorld().getWidth() / 2) + x - Player.x, (getWorld().getHeight() / 2) + y - Player.y);
     }
     public void act() 
     {
-        // Add your action code here.
+        updateLocation();// Add your action code here.
     }    
 }

@@ -36,8 +36,14 @@ public class Water2 extends NatObstical
             y1=Greenfoot.getRandomNumber(10);
             myImage.fillRect(x1, y1, 1, 1);
         }
-        MyWorld.myImage.drawImage(myImage,(x-myImage.getWidth()/2),(y-myImage.getHeight()/2));
+        setImage(myImage);
+        //MyWorld.myImage.drawImage(myImage,(x-myImage.getWidth()/2),(y-myImage.getHeight()/2));
     }
+
+    public void updateLocation(){
+        setLocation((getWorld().getWidth() / 2) + x - Player.x, (getWorld().getHeight() / 2) + y - Player.y);
+    }
+
     public void act() 
     {
         if(start==0){
@@ -47,6 +53,7 @@ public class Water2 extends NatObstical
             setImage(image);
             start=1;
         }
+        updateLocation();
         updateImage();// Add your action code here.
     }       
 }

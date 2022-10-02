@@ -33,10 +33,42 @@ public class Builder extends Actor
             else if(type==42){
                 myst=new Crossroad1(0);
             }
+            else if(type==43){
+                myst=new Router1(0);
+            }
+            else if(type==56){
+                myst=new GraphiteFactory(0);
+            }
+            else if(type==57){
+                myst=new SiliconFactory(0);
+            }
+            else if(type==58){
+                myst=new glassOven(0);
+            }
+            else if(type==71){
+                myst=new Node1(0);
+            }
+            else if(type==73){
+                myst=new EnergyGetter1(0);
+            }
+            else if(type==86){
+                myst=new waterPump1(0);
+            }
+            else if(type==87){
+                myst=new WaterTransporter(0);
+            }
+            else if(type==88){
+                myst=new WaterCrossroad(0);
+            }
+            else if(type==89){
+                myst=new WaterRouter(0);
+            }
             getWorld().addObject(myst,getX(),getY());
             start=0;
         }
         if(myst!=null && myst.getWorld() != null){
+            MyWorld.i.drawStructureCost();
+
             myst.transparency=tr;
             setLocation(myst.getX(), myst.getY());
         }
@@ -50,6 +82,7 @@ public class Builder extends Actor
             start = 0;
 
             myst.deleteStructure();
+            MyWorld.i.setNullImage();
         }
     }
 

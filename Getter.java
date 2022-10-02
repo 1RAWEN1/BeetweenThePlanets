@@ -1,5 +1,7 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
+import java.util.ArrayList;
+
 /**
  * Write a description of class Getter here.
  * 
@@ -12,39 +14,75 @@ public class Getter extends Structures
      * Act - do whatever the Getter wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
-    Label speedLab=new Label("", 18, 1);
     GreenfootImage myImage1;
     GreenfootImage getter;
     int rot;
 
     int typeRes;
 
-    int myx;
-    int myy;
-
     int start;
 
     double speed;
     double speed1;
+    ArrayList<Integer> canBreakRes = new ArrayList<>();
+    ArrayList<Integer> Res = new ArrayList<>();
+    int maxValueOfRes;
 
+    double boost;
     int timer1;
     SimpleTimer timer = new SimpleTimer();
     SimpleTimer timer2 = new SimpleTimer();
-    public void act() 
-    {
-        // Add your action code here.
-    }
+
+    double fullSpeed;
     public void doMainActions(){
         if(start==0){
-            getWorld().addObject(speedLab, getX(), getY());
-            speedLab.setFillColor(Color.BLACK);
+            getWorld().addObject(helperLab, getX(), getY());
+            helperLab.setFillColor(Color.BLACK);
             start=1;
         }
         if(type==0){
             updateStructureLocation();
-            speedLab.setLocation(x-Player.x+500+fon.getWidth()
-            , y-Player.y+300);
-            myx=(getX()-800-1)/Map.cof;
+
+            if(changeLocation()) {
+                Res.clear();
+                for (Resource res : getIntersectingObjects(Resource.class)) {
+                    boolean canBreakThisRes = false;
+                    for (Integer resType : canBreakRes) {
+                        if (res.getType() == resType) {
+                            canBreakThisRes = true;
+                            break;
+                        }
+                    }
+                    if (canBreakThisRes) {
+                        for (int i1 = 0; i1 < Res.size(); i1 += 2) {
+                            if (Res.get(i1) == res.getType()) {
+                                Res.set(i1 + 1, Res.get(i1 + 1) + 1);
+                                break;
+                            } else if (i1 + 2 == Res.size()) {
+                                Res.add(res.getType());
+                                Res.add(1);
+                                break;
+                            }
+                        }
+                        if (Res.size() == 0) {
+                            Res.add(res.getType());
+                            Res.add(1);
+                        }
+                    }
+                }
+
+                maxValueOfRes = 0;
+                typeRes = -1;
+                for (int i2 = 1; i2 < Res.size(); i2 += 2) {
+                    if (Res.get(i2) > maxValueOfRes) {
+                        maxValueOfRes = Res.get(i2);
+                        typeRes = Res.get(i2 - 1);
+                    }
+                }
+
+                speed = speed1 * maxValueOfRes;
+            }
+            /*myx=(getX()-800-1)/Map.cof;
             myy=(getY()-1)/Map.cof;
             if(myx<MyWorld.x1-2 && myx>0
             && myy<MyWorld.y1-2 && myy>0){
@@ -132,40 +170,69 @@ public class Getter extends Structures
             else{
                 speed=0;
                 typeRes =0;
-            }
-            speedLab.typeres= typeRes;
-            speedLab.setValue(""+speed);
+            }*/
+            helperLab.typeres= typeRes;
+            helperLab.setValue(""+speed);
             MouseInfo mi = Greenfoot.getMouseInfo();
             if(mi != null && mi.getButton() == 1 && Mouse.mousePressed && speed>0 && !isTouching(NatObstical.class) && !isTouching(Structures.class)){
                 if(canBeBuild()){
-                    x=MyWorld.mi.x;
-                    y=MyWorld.mi.y;
                     timer1=(int)(1000/speed);
                     timer.mark();
-                    getWorld().removeObject(speedLab);
                     type=1;
                 }
             }
-            else if(mi != null  && mi.getButton() == 3 || Greenfoot.isKeyDown("Escape")){
-                getWorld().removeObject(speedLab);
-            }
         }
-        else if(type==1){
+        else if(type==1 && isBuilt()){
             isClick();
+
+            if(MyWorld.selectedStructure == this){
+                updateLabelLocation();
+
+                helperLab.typeres= typeRes;
+                helperLab.setValue("" + fullSpeed);
+            }
+            else if(helperLab.typeres != -1){
+                helperLab.typeres = -1;
+                helperLab.setValue("");
+            }
 
             checkStructures();
 
-            if(timer.millisElapsed()>timer1 && resNum[typeRes]< maxResourсes){
-                resNum[typeRes]++;
-                timer.mark();
-            }
-
             removeNullStructures();
 
-            if(timer2.millisElapsed() > millisStep){
-                transportRes(typeRes);
+            if(typeRes != 0) {
+                if(resNum[0] > 0){
+                    boost = 1.3;
+                }
+                else{
+                    boost = 1;
+                }
 
-                timer2.mark();
+                fullSpeed = speed * boost;
+
+                if (timer.millisElapsed() > timer1 / boost && resNum[typeRes] < maxResourсes) {
+                    resNum[typeRes]++;
+                    if(resNum[0] > 0){
+                        resNum[0]--;
+                    }
+                    timer.mark();
+                }
+
+                if (timer2.millisElapsed() > millisStep) {
+                    transportRes(typeRes);
+
+                    timer2.mark();
+                }
+            }
+            else {
+                fullSpeed = speed;
+
+                if (timer.millisElapsed() > timer1 && resNum[typeRes] < maxValueOfLiquid) {
+                    resNum[typeRes]++;
+                    timer.mark();
+                }
+
+                transportRes(typeRes);
             }
         }
     }
